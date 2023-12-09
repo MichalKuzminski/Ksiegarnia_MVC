@@ -13,7 +13,7 @@ namespace Ksiegarnia_MVC.Models
         [Display(Name = "Autor")]
         public string? Author { get; set; }
 
-        [Display(Name = "Data zakupu")]
+        [Display(Name = "Data wypożyczenia")]
         [DataType(DataType.Date)]
         public DateTime PurchaseDate { get; set; }
 
@@ -23,5 +23,9 @@ namespace Ksiegarnia_MVC.Models
         [Display(Name = "Cena")]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
+
+        [Display(Name = "Id wypożyczającego")]
+        public int? CustomerId { get; set; }
+        public Customer? Customer { get; set; }
     }
 }

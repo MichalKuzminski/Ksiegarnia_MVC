@@ -15,5 +15,18 @@ namespace Ksiegarnia_MVC.Data
         }
 
         public DbSet<Ksiegarnia_MVC.Models.Book> Book { get; set; } = default!;
+        public DbSet<Ksiegarnia_MVC.Models.Customer> Customer { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Customer)
+                .WithMany(c => c.Books)
+                .HasForeignKey(b => b.CustomerId)
+                .OnDelete(DeleteBehavior.SetNull);
+        }
+
+
     }
 }

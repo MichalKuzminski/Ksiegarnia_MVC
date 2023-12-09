@@ -24,7 +24,7 @@ namespace Ksiegarnia_MVC.Controllers
         public async Task<IActionResult> Index(string sortOrder, string? searchString)
         {
             ViewData["TitleSortParm"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "Data_zakupu" ? "date_desc" : "Data_zakupu";
+            ViewData["DateSortParm"] = sortOrder == "Data_wypozyczenia" ? "date_desc" : "Data_wypozyczenia";
 
 
             var books = _context.Book.Where(book => string.IsNullOrEmpty(searchString) || book.Title.Contains(searchString));
@@ -36,7 +36,7 @@ namespace Ksiegarnia_MVC.Controllers
                 case "title_desc":
                     books = books.OrderByDescending(b => b.Title);
                     break;
-                case "Data_zakupu":
+                case "Data_wypozyczenia":
                     books = books.OrderBy(b => b.PurchaseDate);
                     break;
                 case "date_desc":
@@ -73,7 +73,18 @@ namespace Ksiegarnia_MVC.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
-            return View();
+            var customerList = _context.Customer.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.FirstName+" "+c.LastName
+            }).ToList();
+
+            // Dodaj domyślny element do listy rozwijanej
+            customerList.Insert(0, new SelectListItem { Value = "", Text = "Wybierz klienta..." });
+
+            // Przypisz listę do ViewBag
+            ViewBag.CustomerList = customerList;
+            return View(new Book());
         }
 
         // POST: Books/Create
@@ -81,7 +92,7 @@ namespace Ksiegarnia_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Author,PurchaseDate,Genre,Price")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,Title,Author,PurchaseDate,Genre,Price,CustomerId")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -89,6 +100,18 @@ namespace Ksiegarnia_MVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            else
+            {
+                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(modelError.ErrorMessage);
+                }
+
+            }
+            ViewBag.CustomerList = _context.Customer
+        .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.FirstName+" "+c.LastName })
+        .ToList();
             return View(book);
         }
 
@@ -105,6 +128,7 @@ namespace Ksiegarnia_MVC.Controllers
             {
                 return NotFound();
             }
+            ViewBag.CustomerList = _context.Customer.ToList();
             return View(book);
         }
 
@@ -113,7 +137,7 @@ namespace Ksiegarnia_MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,PurchaseDate,Genre,Price")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,PurchaseDate,Genre,Price, CustomerId")] Book book)
         {
             if (id != book.Id)
             {
@@ -140,6 +164,7 @@ namespace Ksiegarnia_MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.CustomerList = _context.Customer.ToList();
             return View(book);
         }
 

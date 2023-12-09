@@ -26,13 +26,16 @@
                 @Html.DisplayNameFor(model => model.Author)
             </th>
             <th>
-                @Html.ActionLink("Data_zakupu", "Index", new { sortOrder = ViewBag.DateSortParm })
+                @Html.ActionLink("Data_wypozyczenia", "Index", new { sortOrder = ViewBag.DateSortParm })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
             </th>
             <th></th>
         </tr>
@@ -55,6 +58,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
