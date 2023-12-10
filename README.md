@@ -1,5 +1,5 @@
 # Ksiegarnia_MVC
-Aplikacja do zarządzania zasobami książek w księgarni. Aplikacja jest oparta o dwie tabele w bazie, które łączą się na podstawie relacji za pomocą klucza obcego (Książka oraz Klient). Oprócz tego zaimplementowano prosty mechanizm sortowania (po wybranych kolumnach) oraz filtrowania (po całości lub fragmencie tytułu książki) 
+Aplikacja do zarządzania zasobami książek w księgarni(operacje CRUD). Aplikacja jest oparta o dwie tabele w bazie, które łączą się na podstawie relacji za pomocą klucza obcego (Książka oraz Klient). Oprócz tego zaimplementowano prosty mechanizm sortowania (po wybranych kolumnach) oraz filtrowania (po całości lub fragmencie tytułu książki) 
 
 Zrzuty ekranu
 
